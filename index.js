@@ -159,7 +159,42 @@ class BST {
     traversePostOrder(this.root);
     return postOrderArray;
   }
+
+  isBalanced() {
+    return this.findMinHeight() >= this.findMaxHeight() - 1;
+  }
+
+  findMinHeight(currentNode = this.root) {
+    if (currentNode == null) {
+      return -1;
+    }
+    let left = this.findMinHeight(currentNode.left);
+    let right = this.findMinHeight(currentNode.right);
+    if (left < right) {
+      return left + 1;
+    } else {
+      return right + 1;
+    }
+  }
+  findMaxHeight(currentNode = this.root) {
+    if (currentNode == null) {
+      return -1;
+    }
+    let left = this.findMaxHeight(currentNode.left);
+    let right = this.findMaxHeight(currentNode.right);
+    if (left > right) {
+      return left + 1;
+    } else {
+      return right + 1;
+    }
+  }
+
+  rebalance() {
+    const rebalancedArray = this.inOrder();
+    this.root = this.buildTree(rebalancedArray);
+  }
 }
+
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
@@ -182,3 +217,6 @@ console.log(tree.levelOrder());
 console.log(tree.inOrder());
 console.log(tree.preOrder());
 console.log(tree.postOrder());
+console.log(tree.isBalanced());
+tree.rebalance();
+prettyPrint(tree.root);
